@@ -1,0 +1,72 @@
+/**
+ * @singleton      true
+ */
+component {
+
+	property name="configService" inject="configService";
+
+// CONSTRUCTOR
+	public any function init() {
+		return this;
+	}
+
+// PUBLIC API METHODS
+	public boolean function checkSettings() {
+		var endpoint = configService.getSetting( "pixl8.translation.manager.endpoint" );
+		var apiKey   = configService.getSetting( "pixl8.translation.manager.apikey" );
+
+		return Len( Trim( endpoint ) ) && Len( Trim( apiKey ) );
+	}
+
+	public struct function push(
+		  required string projectSlug
+		, required string projectVersion
+		, required string sourceDirectory
+	) {
+		var directoryFiles = DirectoryList( arguments.sourceDirectory, true, "path", "*.properties" );
+		var filesToPush    = [];
+
+		for( var filePath in directoryFiles ) {
+			ArrayAppend( filesToPush, {
+				  filename = Right( filePath, Len( filePath )-Len( arguments.sourceDirectory ) )
+				, content = FileRead( filePath )
+			} );
+		}
+
+		return _apiCall(
+			  uri    = "/project/#arguments.projectSlug#/#arguments.projectVersion#/"
+			, method = "POST"
+			, body   = filesToPush
+		);
+
+	}
+
+// PRIVATE HELPERS
+	private any function _apiCall(
+		  required string uri
+		,          string method = "GET"
+		,          struct params = {}
+		,          any    body
+	) {
+		var apiCallUrl = configService.getSetting( "pixl8.translation.manager.endpoint" ) & arguments.uri;
+		var apiKey     = configService.getSetting( "pixl8.translation.manager.apikey" );
+		var paramType  = arguments.method == "GET" ? "url" : "formfield";
+		var response   = "";
+
+		http url=apiCallUrl throwonerror=true timeout=60 result="response" method="#arguments.method#" {
+			httpparam type="header" name="Authorization" value="Basic #toBase64( ":#apiKey#" )#";
+			for( var key in arguments.params ) {
+				httpparam type=paramType name=key value=arguments.params[ key ];
+			}
+			if ( StructKeyExists( arguments, "body" ) ) {
+				httpparam type="header" name="Content-Type" value="application/json; charset=UTF-8";
+				httpparam type="body" value=SerializeJson( arguments.body );
+			}
+		}
+
+		return DeserializeJson( response.fileContent ?: "" );
+	}
+
+// GETTERS AND SETTERS
+
+}
