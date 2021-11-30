@@ -1,0 +1,22 @@
+{
+    "name":"Pixl8 Translation Manager CommandBox Commands",
+    "version":"$VERSION_NUMBER",
+    "location":"$DOWNLOAD_URL",
+    "author":"Pixl8 Group Ltd",
+    "type":"commandbox-modules",
+    "homepage":"https://github.com/pixl8/pixl8-translation-manager-commandbox-commands",
+    "repository":{
+        "type":"git",
+        "URL":"https://github.com/pixl8/pixl8-translation-manager-commandbox-commands"
+    },
+    "slug":"pixl8-translation-manager-commandbox-commands",
+    "shortDescription":"Commands for pushing and pulling translation projects to Pixl8's translation manager",
+    "keywords":"Commands",
+    "private":false,
+    "projectURL":"https://github.com/pixl8/pixl8-translation-manager-commandbox-commands",
+    "ignore":[
+        ".git/*",
+        ".gitignore",
+        ".twgit*"
+    ]
+}
