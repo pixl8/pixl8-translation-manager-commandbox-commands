@@ -44,7 +44,7 @@ component {
 		);
 
 		print.line();
-		print.greenLine( "Pull success: " & SerializeJson( report ) );
+		print.greenLine( "Pull success, imported [#NumberFormat( report.fileCount )#]  files."  );
 		print.line();
 	}
 
