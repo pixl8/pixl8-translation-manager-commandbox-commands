@@ -8,7 +8,7 @@ component {
 	property name="apiService" inject="Pixl8TranslationManagerApiService@pixl8-translation-manager-commandbox-commands";
 
 	/**
-	 * @projectSlug.hint     i.e. package name, such as preside-ext-admin-dashboaqrds
+	 * @projectSlug.hint     i.e. package name, such as preside-ext-admin-dashboards
 	 * @projectVersion.hint  current build version, e.g. 5.3.0
 	 * @sourceDirectory.hint Source directory containing i18n .properties files
 	 **/

@@ -1,6 +1,5 @@
 /**
- * Pushes translation files for a project
- * to the Translation Manager.
+ * Pulls translation files down from Translation Manager
  *
  **/
 component {
@@ -8,7 +7,7 @@ component {
 	property name="apiService" inject="Pixl8TranslationManagerApiService@pixl8-translation-manager-commandbox-commands";
 
 	/**
-	 * @projectSlug.hint     i.e. package name, such as preside-ext-admin-dashboaqrds
+	 * @projectSlug.hint     i.e. package name, such as preside-ext-admin-dashboards
 	 * @projectVersion.hint  Project version to fetch
 	 * @targetDirectory.hint Target directory where i18n files will be written
 	 * @languages.hint       Comma list of ISO language codes to pull, e.g. fr,de,es
