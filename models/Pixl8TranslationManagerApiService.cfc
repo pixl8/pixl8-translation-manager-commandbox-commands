@@ -11,13 +11,6 @@ component {
 	}
 
 // PUBLIC API METHODS
-	public boolean function checkSettings() {
-		var endpoint = configService.getSetting( "pixl8.translation.manager.endpoint" );
-		var apiKey   = configService.getSetting( "pixl8.translation.manager.apikey" );
-
-		return Len( Trim( endpoint ) ) && Len( Trim( apiKey ) );
-	}
-
 	public struct function push(
 		  required string projectSlug
 		, required string projectVersion
@@ -39,6 +32,36 @@ component {
 			, body   = filesToPush
 		);
 
+	}
+
+	public struct function pull(
+		  required string projectSlug
+		, required string projectVersion
+		, required string targetDirectory
+		, required string languages
+	) {
+		var filesToWrite = _apiCall(
+			  uri = "/project/#arguments.projectSlug#/#arguments.projectVersion#/"
+			, params = { languages=arguments.languages }
+			, method = "GET"
+		);
+		var report = { fileCount=ArrayLen( filesToWrite ), files=[] };
+
+		for( var fileToWrite in filesToWrite ) {
+			var fullPath = arguments.targetDirectory & fileToWrite.filename;
+			DirectoryCreate( GetDirectoryFromPath( fullPath ), true, true );
+			FileWrite( fullPath, fileToWrite.content );
+			ArrayAppend( report.files, fullPath );
+		}
+
+		return report;
+	}
+
+	public boolean function checkSettings() {
+		var endpoint = configService.getSetting( "pixl8.translation.manager.endpoint" );
+		var apiKey   = configService.getSetting( "pixl8.translation.manager.apikey" );
+
+		return Len( Trim( endpoint ) ) && Len( Trim( apiKey ) );
 	}
 
 // PRIVATE HELPERS

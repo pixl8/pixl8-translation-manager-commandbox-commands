@@ -9,13 +9,15 @@ component {
 
 	/**
 	 * @projectSlug.hint     i.e. package name, such as preside-ext-admin-dashboaqrds
-	 * @projectVersion.hint  current build version, e.g. 5.3.0
-	 * @sourceDirectory.hint Source directory containing i18n .properties files
+	 * @projectVersion.hint  Project version to fetch
+	 * @targetDirectory.hint Target directory where i18n files will be written
+	 * @languages.hint       Comma list of ISO language codes to pull, e.g. fr,de,es
 	 **/
 	function run(
 		  required string projectSlug
 		, required string projectVersion
-		, required string sourceDirectory
+		, required string targetDirectory
+		, required string languages
 	) {
 		if ( !apiService.checkSettings() ) {
 			return _printError( "Translation manager API connection is not configured. Please configure by running the *pixl8 translations setCredentials* and *pixl8 translations setEndpoint* commands." );
@@ -26,8 +28,8 @@ component {
 
 		}
 
-		if ( !DirectoryExists( arguments.sourceDirectory ) ) {
-			return _printError( "Source directory does not exist: [#arguments.sourceDirectory#]" );
+		if ( !DirectoryExists( arguments.targetDirectory ) ) {
+			return _printError( "Target directory does not exist: [#arguments.targetDirectory#]" );
 
 		}
 
@@ -35,14 +37,15 @@ component {
 			return _printError( "Project version must be in semver format, e.g. 4.0.2, or 0.9.0-rc2, etc." );
 		}
 
-		var report = apiService.push(
+		var report = apiService.pull(
 			  projectSlug     = arguments.projectSlug
 			, projectVersion  = arguments.projectVersion
-			, sourceDirectory = arguments.sourceDirectory
+			, targetDirectory = arguments.targetDirectory
+			, languages       = arguments.languages
 		);
 
 		print.line();
-		print.greenLine( "push success: " & SerializeJson( report ) );
+		print.greenLine( "Pull success: " & SerializeJson( report ) );
 		print.line();
 	}
 
