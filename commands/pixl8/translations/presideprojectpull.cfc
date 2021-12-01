@@ -72,7 +72,7 @@ component {
 
 			try {
 				command( "pixl8 translations pull" ).params(
-					  projectSlug     = presidecms
+					  projectSlug     = "presidecms"
 					, projectVersion  = presideVersion
 					, targetDirectory = arguments.rootDirectory & "/preside/system/i18n"
 					, languages       = arguments.languages
