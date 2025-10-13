@@ -76,7 +76,7 @@ component {
 		var paramType  = arguments.method == "GET" ? "url" : "formfield";
 		var response   = "";
 
-		http url=apiCallUrl throwonerror=true timeout=60 result="response" method="#arguments.method#" {
+		http url=apiCallUrl throwonerror=true timeout=120 result="response" method="#arguments.method#" {
 			httpparam type="header" name="Authorization" value="Basic #toBase64( ":#apiKey#" )#";
 			for( var key in arguments.params ) {
 				httpparam type=paramType name=key value=arguments.params[ key ];
